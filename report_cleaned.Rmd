@@ -1,0 +1,132 @@
+---
+title: "Comparative Energy and Emissions Analysis of Clean Tech Materials"
+author: "Alice Pigelet"
+date: "May 30, 2025"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+---
+
+# Introduction
+
+Manufacturing processes for clean technology materials can be highly energy-intensive, leading to significant greenhouse gas emissions. The industrial manufacturing sector is a major consumer of energy and contributor to carbon emissions. Reducing the energy requirements and emissions in material production is therefore crucial for improving sustainability and combating climate change.
+
+This project focuses on the energy use and carbon dioxide (CO₂) emissions associated with producing three representative clean-tech materials: porous silica beads, zeolites, and glass. These materials are important in various clean technology applications (from filtration and catalysis to renewable energy systems), yet their production can entail substantial energy consumption. The goal of this analysis is to quantify and compare the energy inputs and emissions across different stages of each material’s manufacturing process. By identifying which materials and production steps are most energy- or emissions-intensive, we can gain insights into opportunities for improving sustainable manufacturing practices.
+
+# Data Sources
+
+The analysis uses a dataset compiled from multiple sources, including industrial Life Cycle Assessment (LCA) studies and technical reports. The data were drawn from:
+
+- Industrial LCA reports on porous silica beads and zeolite production.
+- Technical documentation on silica-based material manufacturing.
+- Life-cycle datasets for glass manufacturing.
+
+Each data source provided estimates of energy consumption (in GJ) and CO₂ emissions (in kg) associated with various production stages. The compiled data is consolidated into a CSV file for analysis.
+
+# Methods
+
+This project was carried out using the R programming language with a tidy data analysis approach.
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+Steps included:
+
+1. **Data Import and Cleaning**  
+   Load the CSV data and inspect structure.
+
+   ```{r}
+   data <- read_csv("data/clean_energy_comparison.csv")
+   glimpse(data)
+   ```
+
+2. **Data Transformation**  
+   Convert columns to factors and rename for clarity.
+
+   ```{r}
+   colnames(data) <- c("Material", "Process_Stage", "Energy_Value", "CO2_Value", "Notes", "Source")
+   data <- data %>%
+     mutate(
+       Material = factor(Material),
+       Process_Stage = factor(Process_Stage, levels = unique(Process_Stage))
+     )
+   ```
+
+3. **Summary Calculation**
+
+   ```{r}
+   totals <- data %>%
+     group_by(Material) %>%
+     summarise(
+       Total_Energy = sum(Energy_Value, na.rm = TRUE),
+       Total_CO2 = sum(CO2_Value, na.rm = TRUE)
+     ) %>%
+     mutate(CO2_per_GJ = Total_CO2 / Total_Energy)
+   ```
+
+# Results
+
+## Energy Use by Material and Stage
+
+```{r energy-by-stage, echo=FALSE, fig.cap="Energy use by material and process stage."}
+ggplot(data %>% filter(Process_Stage != "Total"), aes(x = Material, y = Energy_Value, fill = Process_Stage)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "Energy Use by Material and Process Stage", x = "Material", y = "Energy (GJ/ton)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+## CO₂ Emissions by Material and Stage
+
+```{r co2-by-stage, echo=FALSE, fig.cap="CO₂ emissions by material and process stage."}
+ggplot(data %>% filter(Process_Stage != "Total"), aes(x = Material, y = CO2_Value, fill = Process_Stage)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(title = "CO₂ Emissions by Material and Process Stage", x = "Material", y = "CO₂ Emissions (kg/ton)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+## Total Energy Use per Material
+
+```{r total-energy, echo=FALSE, fig.cap="Total energy use per material."}
+ggplot(totals, aes(x = Material, y = Total_Energy)) +
+  geom_col(fill = "steelblue") +
+  labs(title = "Total Energy Use per Material", x = "Material", y = "Energy (GJ/ton)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+## Total CO₂ Emissions per Material
+
+```{r total-co2, echo=FALSE, fig.cap="Total CO₂ emissions per material."}
+ggplot(totals, aes(x = Material, y = Total_CO2)) +
+  geom_col(fill = "indianred") +
+  labs(title = "Total CO₂ Emissions per Material", x = "Material", y = "CO₂ (kg/ton)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+## CO₂ per GJ Energy
+
+```{r co2-per-gj, echo=FALSE, fig.cap="CO₂ emissions per GJ of energy."}
+ggplot(totals, aes(x = Material, y = CO2_per_GJ)) +
+  geom_col(fill = "gray50") +
+  labs(title = "CO₂ Emissions per GJ of Energy", x = "Material", y = "CO₂ (kg/GJ)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+# Discussion
+
+- **Glass** is the most energy- and CO₂-intensive.
+- **Porous silica beads** have the lowest footprint.
+- The **processing stage** is the largest contributor to emissions and energy use.
+- Reducing CO₂ per GJ requires cleaner energy sources (e.g., renewables).
+- Prioritizing improvements in high-energy stages can yield big sustainability gains.
+
+# Conclusion
+
+This analysis provides insights into how clean tech materials differ in energy and emissions profiles. By focusing on processing efficiencies and clean energy sources, industries can greatly reduce the carbon footprint of material production.
