@@ -1,0 +1,21 @@
+Material,Process Stage,Energy GJ per ton/L,CO2 kg per ton/L,Notes,Source
+Porous silica beads,Sodium silicate (waterglass) production,11.0,1514.0,Manufacture of Na₂SiO₃ from sand & soda ash ,"oai_citation:0‡patents.justia.com](https://patents.justia.com/patent/20220119267#:~:text=are%20comparable%2C%20with%2010,an%20Australian%20figure%20which%20includes)"
+Porous silica beads,Bead formation (gelation),0.0,0.0,Assumed negligible energy input (mixing/reacting),
+Porous silica beads,Drying (evaporation),4.0,200.0,"Estimated energy to remove pore water (e.g. oven drying, approx.)",
+Porous silica beads,Calcination (template burn-off),1.0,300.0,If organics used for porosity (assumed ~10% mass); CO₂ from fuel + polymer oxidation,
+Zeolite (synthetic aluminosilicate),Sodium silicate production,11.0,1514.0,Precursor Na₂SiO₃ (waterglass) energy/CO₂ ,"oai_citation:2‡patents.justia.com](https://patents.justia.com/patent/20220119267#:~:text=are%20comparable%2C%20with%2010,an%20Australian%20figure%20which%20includes)"
+Zeolite (synthetic aluminosilicate),Sodium aluminate production,5.0,350.0,Precursor NaAlO₂ from bauxite (assumed ~10 GJ/t alumina in Bayer process) ,"oai_citation:3‡en.wikipedia.org](https://en.wikipedia.org/wiki/Bayer_process#:~:text=1,5)"
+Zeolite (synthetic aluminosilicate),Hydrothermal synthesis (crystallization),1.0,50.0,"Energy for heating autoclave, stirring, etc. (moderate heat, ~100–200 °C)",
+Zeolite (synthetic aluminosilicate),Drying & finishing,1.0,50.0,Drying product (low-temp) and any activation; assumed no organic template (no high-temp calcination),
+Zeolite (synthetic aluminosilicate),Total (approx.),18.0,2000.0,Sum of stages (raw material production is the largest contributor),
+Silica aerogel,Silica precursor production,11.0,1514.0,Base silica source (e.g. sodium silicate) ,"oai_citation:4‡patents.justia.com](https://patents.justia.com/patent/20220119267#:~:text=are%20comparable%2C%20with%2010,an%20Australian%20figure%20which%20includes)"
+Silica aerogel,Solvent & reagent production,8.0,1500.0,"Embed. energy for chemicals (e.g. NaOH, HCl, ethanol); heavy use of reactants in process",
+Silica aerogel,Drying process (supercritical CO₂),35.0,1300.0,Energy for solvent exchange and supercritical drying (high pressure + heating),
+Silica aerogel,Total (industrial production),54.0,4314.0,Approx. total per manufacturer: ~53.9 GJ/t and 4.3 tCO₂/t ,"oai_citation:5‡researchportal.bath.ac.uk](https://researchportal.bath.ac.uk/files/260154/Birks_Applied-Energy_2011.pdf#:~:text=Aerogels%20opaque%20insulation%20blankets,and%20CO2%20burden%20in%20organic) (excl. recycled CO₂)"
+BG-11 medium (freshwater),Total (per 1 L),0.003,0.001,High nitrate medium (~1.5 g NaNO₃/L); nutrients contribute minimal embedded energy/CO₂,
+f/2 medium (marine),Total (per 1 L),0.0003,0.0001,Dilute nutrient medium (~75 mg NaNO₃/L); very low embedded energy/CO₂ per liter,
+Zarrouk medium (Spirulina),Total (per 1 L),23.0,11.0,High NaHCO₃ (~16.8 g/L) for carbon source; soda ash production is energy-intensive ,"oai_citation:6‡patents.justia.com](https://patents.justia.com/patent/20220119267#:~:text=Two%20categories%20of%20soda,e%2Fkg%20%28EU%29%20respectively)"
+,,,,,
+,,,,,
+,,,,,
+,,,,,
