@@ -4,19 +4,12 @@ library(tidyverse)
 # Load the data
 data <- read_csv("data/clean_energy_comparison.csv")
 
-# View structure
-glimpse(data)
+# Rename columns for convenience
+colnames(data) <- c("Material", "Process_Stage", "Energy_Value", "CO2_Value", "Notes", "Source")
 
-# Convert material and stage to factors (optional: for ordered plots)
-data <- data %>%
-  mutate(
-    Material = factor(Material),
-    Process_Stage = factor(Process_Stage, levels = unique(Process_Stage))
-  )
-
-# Plot energy values (exclude totals and use common energy unit for comparability)
+# Plot energy values by stage
 energy_plot <- data %>%
-  filter(Process_Stage != "Total", Energy_Unit == "GJ/ton") %>%
+  filter(!is.na(Energy_Value)) %>%
   ggplot(aes(x = Material, y = Energy_Value, fill = Process_Stage)) +
   geom_bar(stat = "identity", position = "stack") +
   labs(
@@ -26,13 +19,11 @@ energy_plot <- data %>%
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
+ggsave("energy_by_stage.png", plot = energy_plot, width = 8, height = 5)
 
-# Save energy plot
-ggsave("visuals/energy_by_stage.png", plot = energy_plot, width = 8, height = 5)
-
-# Plot CO₂ emissions (similar logic)
+# Plot CO2 values by stage
 co2_plot <- data %>%
-  filter(Process_Stage != "Total", CO2_Unit == "kg/ton") %>%
+  filter(!is.na(CO2_Value)) %>%
   ggplot(aes(x = Material, y = CO2_Value, fill = Process_Stage)) +
   geom_bar(stat = "identity", position = "stack") +
   labs(
@@ -42,13 +33,16 @@ co2_plot <- data %>%
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
+ggsave("co2_by_stage.png", plot = co2_plot, width = 8, height = 5)
 
-# Save CO₂ plot
-ggsave("visuals/co2_by_stage.png", plot = co2_plot, width = 8, height = 5)
-
-# Print complete total per material (summary table)
+# Calculate total energy and CO2 per material
 totals <- data %>%
-  filter(Process_Stage == "Total") %>%
-  select(Material, Type, Energy_Value, Energy_Unit, CO2_Value, CO2_Unit)
+  group_by(Material) %>%
+  summarise(
+    Total_Energy = sum(Energy_Value, na.rm = TRUE),
+    Total_CO2 = sum(CO2_Value, na.rm = TRUE)
+  ) %>%
+  mutate(CO2_per_GJ = Total_CO2 / Total_Energy)
 
+# Print final totals
 print(totals)
