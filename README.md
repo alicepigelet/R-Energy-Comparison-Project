@@ -15,7 +15,7 @@ This project analyzes and compares the energy use and carbon dioxide (CO₂) emi
 
 1. Clone this repository:
    ```bash
-git clone https://github.com/alicepigelet/R-Energy-Comparison-Project.git
+   git clone https://github.com/alicepigelet/R-Energy-Comparison-Project.git
 
 This data analysis project investigates the sustainability of manufacturing three common clean-tech materials—porous silica beads, zeolites, and soda-lime glass—by comparing their respective energy demands and carbon dioxide (CO₂) emissions. These materials are foundational in emerging green technologies, yet the environmental cost of their production is often overlooked in policy and investment discussions. This project aims to provide a transparent and reproducible comparison that highlights the most resource-intensive production stages and suggests potential paths for improving industrial sustainability.
 
