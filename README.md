@@ -12,6 +12,8 @@ This project analyzes and compares the energy use and carbon dioxide (CO₂) emi
 - **ggplot2** for visualizations
 - **RMarkdown** for reporting
 
+<img src="visuals/old man of hoy.png" alt="Cayon" width="400"/>
+
 ## 🔁 How to Reproduce
 
 1. Clone this repository:
