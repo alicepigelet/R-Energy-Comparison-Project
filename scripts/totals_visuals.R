@@ -1,6 +1,6 @@
 library(tidyverse)
 
-data <- read_csv("clean_energy_comparison.csv")
+data <- read_csv("data/clean_energy_comparison.csv")
 
 # Rename columns for convenience
 colnames(data) <- c("Material", "Process_Stage", "Energy_Value", "CO2_Value", "Notes", "Source")
