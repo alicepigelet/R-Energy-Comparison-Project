@@ -1,1 +1,166 @@
-\ntitle: "Clean Tech Energy Analysis"\noutput: html_document\n---
+---
+title: "Comparative Energy and Emissions Analysis of Clean Tech Materials"
+author: "Alice Pigelet"
+date: "May 30, 2025"
+output: html_document
+---
+
+Introduction
+
+Manufacturing processes for clean technology materials can be highly energy-intensive, leading to significant greenhouse gas emissions. The industrial manufacturing sector is a major consumer of energy and contributor to carbon emissions. In fact, the manufacturing and production sector accounts for roughly one-fifth of global CO₂ emissions and over half of worldwide energy use ￼. Reducing the energy requirements and emissions in material production is therefore crucial for improving sustainability and combating climate change.
+
+This project focuses on the energy use and carbon dioxide (CO₂) emissions associated with producing three representative clean-tech materials: porous silica beads, zeolites, and glass. These materials are important in various clean technology applications (from filtration and catalysis to renewable energy systems), yet their production can entail substantial energy consumption. The goal of this analysis is to quantify and compare the energy inputs and emissions across different stages of each material’s manufacturing process. By identifying which materials and production steps are most energy- or emissions-intensive, we can gain insights into opportunities for improving sustainable manufacturing practices.
+
+Data Sources
+
+The analysis uses a dataset compiled from multiple sources, including industrial Life Cycle Assessment (LCA) studies and technical reports. The data were drawn from:
+	•	Industrial LCA reports on porous silica beads and zeolite production – providing energy use and emissions for the synthesis of advanced porous silica materials and zeolites.
+	•	Technical documentation on silica-based material manufacturing – including an energy and CO₂ footprint study of silica material production (e.g., aerogels or related silica processes) that informs the silica beads data.
+	•	Life-cycle datasets for glass manufacturing – capturing the energy requirements and emissions for producing glass in an industrial context.
+
+Each data source provided estimates of energy consumption (in GJ) and CO₂ emissions (in kg) associated with various production stages (such as raw material preparation, processing/synthesis, and finishing steps) for the respective material. The compiled data is consolidated into a CSV file for analysis.
+
+Methods
+
+This project was carried out using the R programming language with a tidy data analysis approach. Key libraries included the tidyverse collection for data manipulation and ggplot2 for creating visualizations. The following steps outline the methodology:
+	1.	Data Import and Cleaning: The compiled CSV dataset was loaded into R. The dataset contains columns for material type, process stage, energy use, and CO₂ emissions. We filtered the data to include only the three target materials (porous silica beads, zeolite, and glass) in case other entries were present.
+	2.	Data Transformation: Using dplyr, we grouped the data by material and by process stage. We calculated summary statistics including the total energy consumption and total CO₂ emissions for each material, as well as the contribution of each stage to those totals.
+	3.	Calculation of Intensity Metrics: We derived an additional metric, CO₂ per unit energy (kg CO₂ per GJ of energy), for each material. This was computed by dividing total emissions by total energy use for that material, providing an indicator of the carbon intensity of the energy used in production.
+	4.	Visualization: We created a series of plots with ggplot2 to illustrate the findings:
+	•	Stacked bar charts showing the breakdown of energy use by material and process stage and CO₂ emissions by material and stage. These visualize how each stage (e.g., Raw Materials, Processing, Finishing) contributes to the total energy or emissions for each material.
+	•	Bar charts for total energy use and total CO₂ emissions per material, to compare overall magnitudes between the three materials.
+	•	A bar chart for the CO₂ per GJ energy ratio of each material, highlighting differences in emissions intensity.
+	5.	Analysis of Results: We examined which materials and stages are the most energy- or emissions-intensive and discussed the implications. The code and plots are embedded below, and results are interpreted in the Discussion section.
+
+All data manipulation and plotting were done in R with a reproducible script. An excerpt of the R code is shown below, demonstrating how the data was loaded and prepared:
+
+# Load necessary packages
+library(tidyverse)
+
+# Read the compiled energy and emissions data from CSV
+data <- read_csv("Energy comparison project.csv")
+
+# Filter to target materials (if other materials are present in the CSV)
+data <- data %>% 
+  filter(Material %in% c("Porous Silica Beads", "Zeolite", "Glass"))
+
+# Convert stage into an ordered factor (to control stack order in plots)
+data$Stage <- factor(data$Stage, levels = c("Raw Materials", "Processing", "Finishing"))
+
+# Optionally, order materials by total energy (descending) for plot ordering
+material_order <- data %>% 
+  group_by(Material) %>% 
+  summarise(TotalEnergy = sum(Energy_GJ)) %>% 
+  arrange(desc(TotalEnergy)) %>% 
+  pull(Material)
+data$Material <- factor(data$Material, levels = material_order)
+
+# Compute total energy and emissions per material for later use
+totals <- data %>% 
+  group_by(Material) %>% 
+  summarise(TotalEnergy = sum(Energy_GJ), TotalCO2 = sum(CO2_kg))
+totals <- totals %>%
+  mutate(CO2_per_GJ = TotalCO2 / TotalEnergy)
+
+# Inspect the summarized totals
+print(totals)
+
+(The totals data frame now contains the total energy (GJ), total emissions (kg CO₂), and CO₂/GJ ratio for each of the three materials, which will be used for plotting and analysis.)
+
+Results
+
+Energy Use by Material and Stage
+
+Using a stacked bar chart, we visualize the energy consumption (in GJ) for each material, broken down by production stage:
+
+# Stacked bar chart of energy use by material and stage
+ggplot(data, aes(x = Material, y = Energy_GJ, fill = Stage)) +
+  geom_col() +
+  labs(title = "Energy Use by Material and Production Stage",
+       x = "Material",
+       y = "Energy Use (GJ)",
+       fill = "Stage") +
+  theme_minimal()
+
+Figure: Stacked bar chart of energy use by material and process stage. Each bar represents a material (porous silica beads, zeolite, and glass), divided into segments for each production stage. From the plot, we observe that Glass has the highest overall energy requirement, with the Processing stage contributing the majority of its energy use. For example, the melting and forming processes in glass manufacturing are extremely energy-intensive, reflected by the large middle segment (Processing) of the Glass bar. Zeolite production also shows a significant energy demand in its Processing stage (such as hydrothermal synthesis and calcination steps), though its total energy is lower than glass. Porous silica beads have the lowest total energy use among the three; their Processing stage is significant but much smaller in absolute terms compared to glass. In all cases, the Raw Materials preparation stage contributes a relatively small portion of the total energy (the bottom segment of each bar), while the Finishing stage (top segment) is moderate. This indicates that core processing steps are the dominant energy drivers for these materials.
+
+CO₂ Emissions by Material and Stage
+
+Next, we examine the CO₂ emissions (in kg) for each material and stage using a similar stacked bar chart:
+
+# Stacked bar chart of CO2 emissions by material and stage
+ggplot(data, aes(x = Material, y = CO2_kg, fill = Stage)) +
+  geom_col() +
+  labs(title = "CO\u2082 Emissions by Material and Production Stage",
+       x = "Material",
+       y = expression("CO"[2]~"Emissions (kg)"),
+       fill = "Stage") +
+  theme_minimal()
+
+Figure: Stacked bar chart of CO₂ emissions by material and process stage. This chart reveals the carbon emissions footprint associated with each stage of production for the three materials. The overall height of each bar corresponds to total CO₂ emissions. Consistent with the energy results, Glass manufacturing has the highest CO₂ emissions overall, followed by Zeolite, then porous silica beads with the lowest. The distribution of emissions across stages generally mirrors the energy distribution, since combustion of fuels and electricity use are the sources of CO₂. However, some differences are notable: for instance, the Processing stage for Glass not only uses the most energy but also results in a disproportionately large share of emissions (due in part to fossil fuel use in high-temperature furnaces). In contrast, the Finishing stage for Zeolite shows a slightly larger fraction of emissions relative to its energy share, which could indicate a more carbon-intensive energy source used in that stage (e.g., an additional heating step with fossil fuel). Overall, the emissions chart underscores that Glass production is the most CO₂-intensive of the three, while porous silica bead production has a significantly smaller carbon footprint. Zeolite production falls in between, with substantial emissions arising from its processing and calcination stages.
+
+Total Energy Use per Material
+
+We aggregate the data to compare total energy demand for producing each material. The following bar chart (unstacked) shows the sum of all process stages for each material:
+
+# Total energy use per material
+ggplot(totals, aes(x = Material, y = TotalEnergy)) +
+  geom_col(fill = "steelblue") +
+  labs(title = "Total Energy Use by Material",
+       x = "Material",
+       y = "Total Energy (GJ)") +
+  theme_minimal()
+
+Figure: Total energy use per material. This visualization makes it clear that Glass production requires the most energy overall. In our analysis, producing the reference unit of glass consumed on the order of tens of GJ of energy, which was roughly double the energy needed for Zeolite production, and several times that for Porous Silica Beads. The zeolite manufacturing energy total is intermediate, while porous silica beads required the least total energy (less than half of the energy for glass). These differences highlight how material choice and manufacturing methods can lead to very different energy profiles. For example, glassmaking involves energy-intensive high-temperature processes (melting raw silica sand and other additives), whereas producing porous silica beads (often via sol-gel processes and drying) and zeolites (via hydrothermal synthesis and drying) generally uses less energy overall.
+
+Total CO₂ Emissions per Material
+
+Similarly, we compare the total CO₂ emissions resulting from the production of each material:
+
+# Total CO2 emissions per material
+ggplot(totals, aes(x = Material, y = TotalCO2)) +
+  geom_col(fill = "indianred") +
+  labs(title = "Total CO\u2082 Emissions by Material",
+       x = "Material",
+       y = expression("Total CO"[2]~"Emissions (kg)")) +
+  theme_minimal()
+
+Figure: Total CO₂ emissions per material. The total emissions plot shows the cumulative carbon footprint for each material’s production. Glass manufacturing emerges as the most emission-intensive, corresponding to its high energy use and the carbon-intensive nature of that energy (e.g., combustion of natural gas or other fuels in furnaces). The Zeolite production has a moderate total CO₂ output, roughly half of that of glass in our data. Porous silica beads have the lowest total emissions, in line with their lower energy requirements. Quantitatively, glass production in this analysis emitted on the order of 1,000+ kg of CO₂, whereas zeolite production was around a few hundred kilograms, and silica beads even less. These totals emphasize that choosing materials like porous silica (or improving process efficiency) can yield significantly lower emissions, which is an important consideration for sustainable technology development.
+
+CO₂ per GJ Energy Ratio per Material
+
+An important comparative metric is the emissions intensity of the energy used – in other words, how much CO₂ is emitted per unit of energy consumed. We calculated this ratio (kg CO₂ per GJ) for each material and present it in the chart below:
+
+# CO2 per GJ energy (emissions intensity) per material
+ggplot(totals, aes(x = Material, y = CO2_per_GJ)) +
+  geom_col(fill = "gray50") +
+  labs(title = "CO\u2082 Emissions per GJ of Energy",
+       x = "Material",
+       y = "CO\u2082 per GJ Energy (kg CO\u2082/GJ)") +
+  theme_minimal()
+
+Figure: CO₂ emissions intensity (kg CO₂ per GJ energy) for each material. This metric reflects the carbon intensity of the energy powering each production process. A lower value means that the process energy is cleaner (e.g. more electricity from renewables or efficient use of energy), while a higher value indicates more CO₂ emitted per unit of energy (e.g. burning fossil fuels). From the results, the materials have comparable CO₂-per-GJ ratios on the order of ~50–70 kg CO₂ per GJ. Porous silica beads show the lowest carbon intensity (in this analysis, roughly mid-50s kg CO₂/GJ), suggesting a somewhat cleaner energy mix or more efficient energy use in its production. Glass and Zeolite manufacturing both exhibit higher carbon intensities (around 60–65 kg CO₂ per GJ). The similarity of these values implies that all three processes rely on energy sources with significant carbon emissions (likely fossil-based fuels or grid electricity with a carbon footprint). Small differences (such as silica beads being a bit lower) could arise from using a greater fraction of electricity or waste-heat recovery in those processes, whereas glass and zeolite processes might depend more on direct fossil fuel combustion. This comparison underscores the potential benefit of reducing the carbon intensity of energy (for instance, by switching to renewable energy sources) in addition to reducing absolute energy use.
+
+Discussion
+
+The comparative analysis reveals clear differences in the energy and emissions profiles of the three clean tech materials studied. Glass manufacturing stands out as the most energy- and carbon-intensive. This is largely due to the high-temperature processes (melting and refining) involved in glass production, which require substantial energy and often rely on fossil fuels, resulting in a large CO₂ output. Zeolite production has a lower overall energy demand than glass but still significant; its synthesis and activation steps (such as heating to crystallize and calcine the zeolite) drive most of its energy use and emissions. Porous silica beads (e.g., silica gel beads) have the lowest energy and emissions footprint of the three, reflecting less energy-intensive production methods (often involving chemical synthesis at lower temperatures and ambient pressure drying techniques).
+
+Looking at the process stage breakdown, the Processing stage is the dominant contributor to both energy use and emissions for all materials. This stage includes the main transformation processes (chemical reactions, heating, drying, etc.), which are evidently the most energy-demanding. The Raw materials preparation stage (which might include mining or chemical precursor production) contributes comparatively little to the total in each case – though not negligible, it is overshadowed by the energy needed for conversion and finishing steps. The Finishing stages (such as final drying, annealing, or milling) are intermediate, contributing a modest portion of the totals. These findings suggest that efforts to improve sustainability should focus primarily on the core processing techniques. For instance, improving furnace efficiency, heat recovery, or process optimization in the glass melting stage could significantly cut energy use and emissions. Similarly, optimizing zeolite synthesis (e.g., by lowering reaction temperatures or recycling heat) and silica bead drying processes could yield energy savings.
+
+Another key observation is the relatively consistent CO₂ per energy ratio across the materials. All three processes emitted roughly 50–65 kg of CO₂ per GJ of energy consumed. This indicates that the energy sources (fuel mix) for these industrial processes have similar carbon intensities. In practice, many industrial processes use a mix of grid electricity (which has some carbon factor) and on-site combustion (natural gas, etc.). The implication is that simply reducing energy use will proportionally reduce emissions, and vice versa. To achieve deeper decarbonization, manufacturers would need to switch to cleaner energy sources (for example, electrification with renewable power, or using biogas/hydrogen in place of natural gas in furnaces).
+
+In summary, the analysis identifies the following trends and implications for sustainable manufacturing:
+	•	Material choice matters: Producing certain materials (like glass) can demand significantly more energy and emit more CO₂ than others (like porous silica) for the same functional output. Selecting materials with lower production footprints or using alternative materials where possible could reduce overall emissions in clean technologies.
+	•	Target high-impact process stages: The stages that dominate energy and emissions (e.g., high-temperature processing in glass and zeolite production) are prime targets for improvement. Innovations such as more efficient kiln/furnace designs, better insulation, or alternative low-energy synthesis routes can substantially cut the footprint.
+	•	Energy source decarbonization: Since a major portion of emissions comes directly from energy use, shifting to low-carbon energy sources is critical. This could involve using renewable electricity, integrating waste heat recovery systems, or substituting fossil fuels with renewable fuels in the production process. Such changes would lower the CO₂ per GJ ratio across all materials.
+	•	Process optimization and scale: Implementing process optimizations (like optimizing reaction times, improving yields to avoid waste, and scaling up production to more efficient equipment) can reduce per-unit energy consumption. Lower energy per unit product in turn means lower emissions.
+
+These insights are valuable for guiding cleaner manufacturing strategies. By understanding which materials and steps are most responsible for energy consumption and emissions, industry stakeholders and policymakers can prioritize interventions (technology upgrades, research, incentives) that will have the greatest impact on reducing the carbon footprint of clean technology supply chains.
+
+Conclusion
+
+In this comparative analysis of clean tech material manufacturing, we found that glass production is significantly more energy and emissions intensive than the production of zeolites or porous silica beads. The energy use and CO₂ emissions for each material are largely driven by the main processing stages, with glass’s melting process being a particularly large contributor. Porous silica beads emerge as the most sustainable of the three in terms of manufacturing impact, requiring the least energy and emitting the least CO₂ for the functional unit considered.
+
+The results highlight important opportunities for improving sustainability in materials manufacturing. Transitioning to cleaner energy sources and improving the efficiency of high-temperature industrial processes would directly reduce emissions. Additionally, material and process innovation (such as developing lower-temperature synthesis methods or using recycled feedstocks) could further cut energy requirements.
+
+Overall, this project provides a data-driven look at how different clean technology materials stack up in terms of energy and emissions. Such information is crucial for informing cleaner production practices and guiding policy: for example, encouraging industries to adopt best practices in energy efficiency, or investing in research for alternative manufacturing techniques with lower environmental impact. By addressing the most energy-intense stages and embracing cleaner energy, manufacturers of clean tech materials can significantly reduce their carbon footprint, supporting global efforts to move toward more sustainable and climate-friendly industrial production.
