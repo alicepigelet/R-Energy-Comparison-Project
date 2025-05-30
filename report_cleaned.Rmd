@@ -19,9 +19,9 @@ This project focuses on the energy use and carbon dioxide (CO₂) emissions asso
 
 The analysis uses a dataset compiled from multiple sources, including industrial Life Cycle Assessment (LCA) studies and technical reports. The data were drawn from:
 
-- Industrial LCA reports on porous silica beads and zeolite production.
-- Technical documentation on silica-based material manufacturing.
-- Life-cycle datasets for glass manufacturing.
+-   Industrial LCA reports on porous silica beads and zeolite production.
+-   Technical documentation on silica-based material manufacturing.
+-   Life-cycle datasets for glass manufacturing.
 
 Each data source provided estimates of energy consumption (in GJ) and CO₂ emissions (in kg) associated with various production stages. The compiled data is consolidated into a CSV file for analysis.
 
@@ -35,37 +35,37 @@ library(tidyverse)
 
 Steps included:
 
-1. **Data Import and Cleaning**  
-   Load the CSV data and inspect structure.
+1.  **Data Import and Cleaning**\
+    Load the CSV data and inspect structure.
 
-   ```{r}
-   data <- read_csv("data/clean_energy_comparison.csv")
-   glimpse(data)
-   ```
+    ```{r}
+    data <- read_csv("data/clean_energy_comparison.csv")
+    glimpse(data)
+    ```
 
-2. **Data Transformation**  
-   Convert columns to factors and rename for clarity.
+2.  **Data Transformation**\
+    Convert columns to factors and rename for clarity.
 
-   ```{r}
-   colnames(data) <- c("Material", "Process_Stage", "Energy_Value", "CO2_Value", "Notes", "Source")
-   data <- data %>%
-     mutate(
-       Material = factor(Material),
-       Process_Stage = factor(Process_Stage, levels = unique(Process_Stage))
-     )
-   ```
+    ```{r}
+    colnames(data) <- c("Material", "Process_Stage", "Energy_Value", "CO2_Value", "Notes", "Source")
+    data <- data %>%
+      mutate(
+        Material = factor(Material),
+        Process_Stage = factor(Process_Stage, levels = unique(Process_Stage))
+      )
+    ```
 
-3. **Summary Calculation**
+3.  **Summary Calculation**
 
-   ```{r}
-   totals <- data %>%
-     group_by(Material) %>%
-     summarise(
-       Total_Energy = sum(Energy_Value, na.rm = TRUE),
-       Total_CO2 = sum(CO2_Value, na.rm = TRUE)
-     ) %>%
-     mutate(CO2_per_GJ = Total_CO2 / Total_Energy)
-   ```
+    ```{r}
+    totals <- data %>%
+      group_by(Material) %>%
+      summarise(
+        Total_Energy = sum(Energy_Value, na.rm = TRUE),
+        Total_CO2 = sum(CO2_Value, na.rm = TRUE)
+      ) %>%
+      mutate(CO2_per_GJ = Total_CO2 / Total_Energy)
+    ```
 
 # Results
 
@@ -121,11 +121,11 @@ ggplot(totals, aes(x = Material, y = CO2_per_GJ)) +
 
 # Discussion
 
-- **Glass** is the most energy- and CO₂-intensive.
-- **Porous silica beads** have the lowest footprint.
-- The **processing stage** is the largest contributor to emissions and energy use.
-- Reducing CO₂ per GJ requires cleaner energy sources (e.g., renewables).
-- Prioritizing improvements in high-energy stages can yield big sustainability gains.
+-   **Glass** is the most energy- and CO₂-intensive.
+-   **Porous silica beads** have the lowest footprint.
+-   The **processing stage** is the largest contributor to emissions and energy use.
+-   Reducing CO₂ per GJ requires cleaner energy sources (e.g., renewables).
+-   Prioritizing improvements in high-energy stages can yield big sustainability gains.
 
 # Conclusion
 
