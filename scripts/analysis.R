@@ -2,7 +2,7 @@
 library(tidyverse)
 
 # Load the data
-data <- read_csv("data/Energy comparison project.csv")
+data <- read_csv("data/clean_energy_comparison.csv")
 
 # View structure
 glimpse(data)
