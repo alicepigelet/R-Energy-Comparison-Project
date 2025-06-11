@@ -48,3 +48,7 @@ To reproduce the analysis:
 
 ```bash
 git clone https://github.com/alicepigelet/R-Energy-Comparison-Project.git
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE) © 2025 [Alice Pigelet](https://github.com/alicepigelet).
