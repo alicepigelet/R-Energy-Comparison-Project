@@ -42,11 +42,11 @@ A consistent **CO₂-per-GJ ratio** across materials suggests that decarbonizing
 - `ggplot2` for visualization
 - `RMarkdown` for reporting
 
-## 🔁 Reproducibility
-
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE) © 2025 [Alice Pigelet](https://github.com/alicepigelet).
+
+## 🔁 Reproducibility
 
 To reproduce the analysis:
 
