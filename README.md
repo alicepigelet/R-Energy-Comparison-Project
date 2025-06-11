@@ -35,7 +35,7 @@ A consistent **CO₂-per-GJ ratio** across materials suggests that decarbonizing
 - Provides actionable insight for **industrial engineers, clean tech startups, sustainability researchers, and policy makers**.
 - Supports decarbonization efforts by identifying the most emission-intensive production stages and offering a reproducible modeling approach.
 
-![Energy by Material](visuals/total_energy_per_material.png)
+![Co2 By Stage](visuals/co2_by_stage.png)
 
 ## 🛠 Tools and Technologies
 
