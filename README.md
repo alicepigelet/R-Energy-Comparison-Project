@@ -22,10 +22,13 @@ Data cleaning, aggregation, and visualization were done in **R**, emphasizing re
 
 ## 🔎 Key Findings
 
-- **Silica aerogels and zeolites have the highest emissions and energy use *per ton of material***, due to energy-intensive precursor synthesis, drying, and calcination steps.
-- **Glass has a lower per-ton footprint**, but remains the most significant contributor in aggregate due to the sheer volume of global production.
-- **Zeolites** show moderate emissions, particularly during synthesis and calcination stages.
-- **Porous silica beads** are the least resource-intensive, with the lowest energy use and CO₂ emissions across all stages.
+### 🔎 Key Findings
+
+- **Silica aerogels have the highest energy use and CO₂ emissions per ton**, primarily due to energy-intensive precursor synthesis and supercritical drying.
+- **Zeolites are also highly carbon- and energy-intensive**, especially during crystallization and calcination stages.
+- **Soda-lime glass has a lower per-ton footprint**, but contributes more to global emissions in aggregate due to the scale of production.
+- **Porous silica beads are the least resource-intensive**, with the lowest energy use and CO₂ emissions across all stages.
+- A **consistent CO₂-per-GJ ratio** across materials suggests that decarbonizing the energy source (e.g., switching from fossil fuels to renewables) could yield significant emissions reductions—regardless of material type.
 
 A consistent **CO₂-per-GJ ratio** across materials suggests that decarbonizing the **energy source** (e.g., replacing fossil fuels with renewables) would yield high-impact reductions in emissions—regardless of material type.
 ![Energy by Material](visuals/total_energy_per_material.png)
