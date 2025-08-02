@@ -22,7 +22,8 @@ Data cleaning, aggregation, and visualization were done in **R**, emphasizing re
 
 ## 🔎 Key Findings
 
-- **Glass** has the highest energy and carbon footprint due to high-temperature melting processes.
+- **Silica aerogels and zeolites have the highest emissions and energy use *per ton of material***, due to energy-intensive precursor synthesis, drying, and calcination steps.
+- **Glass has a lower per-ton footprint**, but remains the most significant contributor in aggregate due to the sheer volume of global production.
 - **Zeolites** show moderate emissions, particularly during synthesis and calcination stages.
 - **Porous silica beads** are the least resource-intensive, with the lowest energy use and CO₂ emissions across all stages.
 
