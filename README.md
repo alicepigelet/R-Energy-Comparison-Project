@@ -30,7 +30,6 @@ Data cleaning, aggregation, and visualization were done in **R**, emphasizing re
 - **Porous silica beads are the least resource-intensive**, with the lowest energy use and CO₂ emissions across all stages.
 - A **consistent CO₂-per-GJ ratio** across materials suggests that decarbonizing the energy source (e.g., switching from fossil fuels to renewables) could yield significant emissions reductions—regardless of material type.
 
-A consistent **CO₂-per-GJ ratio** across materials suggests that decarbonizing the **energy source** (e.g., replacing fossil fuels with renewables) would yield high-impact reductions in emissions—regardless of material type.
 ![Energy by Material](visuals/total_energy_per_material.png)
 
 ## 🧠 Broader Implications
